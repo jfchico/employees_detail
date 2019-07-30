@@ -1,25 +1,55 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
-const EmployeesListContainer = (props) => {
-  const {list, history} = props;
+import {getEmployeesList} from '../../actions/employeesActions';
 
-  return (
-    <div className="employees-list">
-      <h1>Employees</h1>
-      <ul>
-        {
-          list.map(employee => 
-            <li 
-              key={employee.id} 
-              onClick={() => history.push(`/employee/${employee.id}`)}>
-                <h2>{employee.employee_name}</h2>
-            </li>
-          )
+class EmployeesListContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {list: []}
+  }
+
+  static getDerivedStateFromProps = (nextProps, prevState) => {
+    let state = prevState;
+    if (nextProps.list !== prevState.list) {
+      state = {
+        ...prevState, 
+        list: nextProps.list,
+      };
+    }
+
+    return state;
+  };
+
+  componentDidMount = () => {
+    this.props.getEmployeesList();
+  };
+
+  render = () => {
+    const {history} = this.props;
+    const {list} = this.state;
+
+    return (
+      <div className="employees-list">
+        <h1>Employees</h1>
+        {list.length > 0 ?
+          <ul>
+            {
+              list.map(employee => 
+                <li 
+                  key={employee.id} 
+                  onClick={() => history.push(`/employee/${employee.id}`)}>
+                    <h2>{employee.employee_name}</h2>
+                </li>
+              )
+            }
+          </ul>
+          :
+          <h3>The employees list is empty</h3>  
         }
-      </ul>
-    </div>
-  );
+      </div>
+    );
+  }
 };
 
 const mapStateToProps = (state) => {
@@ -28,6 +58,13 @@ const mapStateToProps = (state) => {
   }
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    getEmployeesList: () => dispatch(getEmployeesList()),
+  };
+};
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps,
 )(EmployeesListContainer);
