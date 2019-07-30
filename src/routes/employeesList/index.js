@@ -6,7 +6,10 @@ import {getEmployeesList} from '../../actions/employeesActions';
 class EmployeesListContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {list: []}
+    this.state = {
+      list: [],
+      loadingRequest: false,
+    }
   }
 
   static getDerivedStateFromProps = (nextProps, prevState) => {
@@ -15,6 +18,7 @@ class EmployeesListContainer extends Component {
       state = {
         ...prevState, 
         list: nextProps.list,
+        loadingRequest: false,
       };
     }
 
@@ -23,11 +27,12 @@ class EmployeesListContainer extends Component {
 
   componentDidMount = () => {
     this.props.getEmployeesList();
+    this.setState({loadingRequest: true});
   };
 
   render = () => {
     const {history} = this.props;
-    const {list} = this.state;
+    const {list, loadingRequest} = this.state;
 
     return (
       <div className="employees-list">
@@ -45,7 +50,7 @@ class EmployeesListContainer extends Component {
             }
           </ul>
           :
-          <h3>The employees list is empty</h3>  
+          !loadingRequest ? <h3>The employees list is empty</h3> : <h3>Loading employees list...</h3>
         }
       </div>
     );

@@ -6,7 +6,10 @@ import {getEmployeeDetail} from '../../actions/employeesActions';
 class EmployeeDetailContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {employee: null}
+    this.state = {
+      employee: null,
+      loadingRequest: false,
+    }
   }
 
   static getDerivedStateFromProps = (nextProps, prevState) => {
@@ -15,6 +18,7 @@ class EmployeeDetailContainer extends Component {
       state = {
         ...prevState, 
         employee: nextProps.employee,
+        loadingRequest: false,
       };
     }
 
@@ -24,10 +28,13 @@ class EmployeeDetailContainer extends Component {
   componentDidMount = () => {
     const {match, getEmployeeDetail} = this.props;
     getEmployeeDetail(match.params.id);
+    this.setState({loadingRequest: true});
   }
 
   render = () => {
-    const {employee, match} = this.props;
+    const {match} = this.props;
+    const {employee, loadingRequest} = this.state
+
     if (employee) {
       return (
         <>
@@ -40,8 +47,10 @@ class EmployeeDetailContainer extends Component {
           </div>
         </>
       );
-    } else {
+    } else if (!loadingRequest){
       return <h3>{`The employee number ${match.params.id} does not exist.`}</h3>
+    } else {
+      return <h3>Loading employee details...</h3>;
     }
   };
 }
