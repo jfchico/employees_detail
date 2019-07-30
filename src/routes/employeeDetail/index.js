@@ -1,7 +1,8 @@
 import React from 'react';
 
-const EmployeeDetail = () => {
-  return (<h1>I am an employee detail</h1>)
+const EmployeeDetail = (props) => {
+  const {params} = props.match;
+  return (<h1>{`I am employee number ${params.id}`}</h1>)
 }
 
 export default EmployeeDetail;

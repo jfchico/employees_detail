@@ -6,12 +6,12 @@ import EmployeesList from './routes/employeesList';
 
 import './App.css';
 
-const App = () => {
+const App = (props) => {
   return (
     <div className="App">
       <BrowserRouter>
         <Route exact path="/" component={EmployeesList} />
-        <Route path="/employee" component={EmployeeDetail} />
+        <Route path="/employee/:id" component={EmployeeDetail} />
       </BrowserRouter>
     </div>
   );
