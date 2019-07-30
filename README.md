@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Description
+
+This project is built as an example of use of React and Redux to build a front-end application that fetches data from a server API using Axios.
+
 ## Available Scripts
 
 In the project directory, you can run:
